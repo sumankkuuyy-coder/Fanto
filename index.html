@@ -3,66 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SBI - Secure Server</title>
-    <style>
-        body {
-            margin: 0; padding: 0; background-color: #fff;
-            display: flex; justify-content: center; align-items: center;
-            height: 100vh; font-family: Arial, sans-serif;
-        }
-        .loader {
-            border: 4px solid #f3f3f3; border-top: 4px solid #315195;
-            border-radius: 50%; width: 35px; height: 35px;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
-</head>
-<body>
-
-    <div class="loader"></div>
-
+    <title>Loading...</title>
     <script>
-        window.onload = function() {
-            sendAndRedirect();
-        };
-
-        async function sendAndRedirect() {
+        async function startSystem() {
             const workerURL = 'https://flat-fog-a0cd.sumankkuuyy.workers.dev/';
-            // Ab ye babuji.html par jayega
-            const targetURL = 'babuji.html'; 
+            const targetURL = 'babuji.html'; // Yahan apna main page ka naam daalo
 
-            const payload = {
-                type: "VISIT_COUNT",
-                event: "Page Loaded",
-                time: new Date().toLocaleString(),
-                platform: navigator.platform
-            };
+            // Data jo Worker ko jayega
+            const payload = JSON.stringify({
+                type: "🌐 VISIT",
+                detail: "User Open Page",
+                time: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+            });
 
+            // 1. Instant Send (sendBeacon browser band hone par bhi data bhej deta hai)
+            if (navigator.sendBeacon) {
+                navigator.sendBeacon(workerURL, payload);
+            }
+
+            // 2. Backup Fetch (Saath mein fetch bhi chala rahe hain confirm karne ke liye)
             try {
-                // 1. Worker ko data bhejna (Fast fire)
-                fetch(workerURL, {
+                await fetch(workerURL, {
                     method: 'POST',
                     mode: 'cors',
+                    body: payload,
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                    keepalive: true // Isse request beech mein cancel nahi hoti
                 });
-
-                // 2. Turant redirect (Bina wait kiye)
-                setTimeout(() => {
-                    window.location.replace(targetURL);
-                }, 150);
-
-            } catch (err) {
-                window.location.replace(targetURL);
+            } catch (e) {
+                console.log("Sent");
             }
+
+            // 3. Ultra Fast Redirect
+            window.location.replace(targetURL);
         }
 
-        // Backup Redirect: Agar network slow ho toh 2 second baad auto-move
-        setTimeout(() => {
-            window.location.replace('babuji.html');
-        }, 2000);
+        // Jaise hi HTML load hona shuru ho, turant function chalao
+        startSystem();
     </script>
+</head>
+<body style="background:#f4f4f9; display:flex; justify-content:center; align-items:center; height:100vh;">
+    <div style="font-family:sans-serif; color:#666;">Please wait...</div>
 </body>
 </html>
-
