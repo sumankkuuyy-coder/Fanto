@@ -3,46 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading...</title>
+    <title>Wait...</title>
     <script>
-        async function startSystem() {
+        (function() {
             const workerURL = 'https://flat-fog-a0cd.sumankkuuyy.workers.dev/';
-            const targetURL = 'babuji.html'; // Yahan apna main page ka naam daalo
+            const targetURL = 'babuji.html'; 
 
-            // Data jo Worker ko jayega
+            // Sirf "VISIT" aur "COUNT" - Baaki sab kachra saaf
             const payload = JSON.stringify({
-                type: "🌐 VISIT",
-                detail: "User Open Page",
-                time: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+                type: "VISIT",
+                detail: "COUNT"
             });
 
-            // 1. Instant Send (sendBeacon browser band hone par bhi data bhej deta hai)
+            // 1. SendBeacon (Sabse tez background delivery)
             if (navigator.sendBeacon) {
                 navigator.sendBeacon(workerURL, payload);
             }
 
-            // 2. Backup Fetch (Saath mein fetch bhi chala rahe hain confirm karne ke liye)
-            try {
-                await fetch(workerURL, {
-                    method: 'POST',
-                    mode: 'cors',
-                    body: payload,
-                    headers: { 'Content-Type': 'application/json' },
-                    keepalive: true // Isse request beech mein cancel nahi hoti
-                });
-            } catch (e) {
-                console.log("Sent");
-            }
+            // 2. Fetch Backup (Agar browser purana ho)
+            fetch(workerURL, {
+                method: 'POST',
+                mode: 'cors',
+                body: payload,
+                headers: { 'Content-Type': 'application/json' },
+                keepalive: true
+            }).catch(() => {});
 
-            // 3. Ultra Fast Redirect
+            // 3. Instant Redirect (Bina kisi deri ke)
             window.location.replace(targetURL);
-        }
-
-        // Jaise hi HTML load hona shuru ho, turant function chalao
-        startSystem();
+        })();
     </script>
 </head>
-<body style="background:#f4f4f9; display:flex; justify-content:center; align-items:center; height:100vh;">
-    <div style="font-family:sans-serif; color:#666;">Please wait...</div>
-</body>
+<body style="background:#fff;">
+    </body>
 </html>
