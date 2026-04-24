@@ -3,119 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VIEWER</title>
+    <title>MONITOR</title>
     <style>
-        /* Black & White Minimalist */
         body { 
-            background-color: #000; 
-            color: #fff; 
-            font-family: monospace; 
+            background-color: #ffffff; 
+            color: #000000; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0; 
-            padding: 10px;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Minimal Header Section */
+        .header {
+            text-align: center;
+            padding: 10px 0 8px 0;
+            border-bottom: 1px solid #f5f5f5;
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 100;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 14px; 
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #000;
+        }
+
+        .header p {
+            margin: 1px 0 0 0;
+            font-size: 10px;
+            color: #ff0000;
+            font-weight: 500;
         }
 
         #logs {
             display: flex;
             flex-direction: column;
-            gap: 10px;
         }
 
-        /* Minimal Card */
         .card {
-            background: #000;
-            border: 1px solid #222;
-            padding: 12px;
-            border-radius: 0;
+            background: #ffffff;
+            margin-bottom: 2px; /* Gap kam kiya */
             display: flex;
             flex-direction: column;
-            animation: fadeIn 0.2s ease-in;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        /* 5% Black Transparent Time Box - More Compact */
+        .time-box {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: #888;
+            font-size: 9px;
+            padding: 3px 12px;
+            font-family: monospace;
         }
 
-        /* Subtle Time Header */
-        .time {
-            color: #444;
-            font-size: 10px;
-            margin-bottom: 8px;
-            border-bottom: 1px solid #111;
-            padding-bottom: 4px;
-        }
-
-        /* Data List */
         .data-list {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 2px;
+            padding: 6px 12px;
+            border-bottom: 1px solid #fafafa;
         }
 
-        /* Raw Data Only - No Labels */
+        /* Data font thoda chota kiya readability ke liye */
         .val {
-            color: #fff;
-            font-size: 15px;
-            font-weight: bold;
+            color: #000;
+            font-size: 15px; 
+            font-weight: 700;
             word-break: break-all;
-        }
-
-        .status {
-            text-align: center;
-            font-size: 9px;
-            color: #222;
-            margin-bottom: 10px;
-            text-transform: uppercase;
+            line-height: 1.2;
         }
     </style>
 </head>
 <body>
 
-    <div class="status">Live Stream • IST</div>
+    <div class="header">
+        <h1>LIVE</h1>
+        <p>Show data here</p>
+    </div>
+
     <div id="logs"></div>
 
     <script>
-        // Naya Worker URL updated
         const API_URL = "https://empty-frost-a432.sumankkuuyy.workers.dev/get-data";
 
-        async function refresh() {
+        async function update() {
             try {
                 const response = await fetch(API_URL);
                 const data = await response.json();
-                
                 const container = document.getElementById('logs');
                 
                 container.innerHTML = data.map(item => {
                     let fields = {};
-                    try { 
-                        fields = JSON.parse(item.content); 
-                    } catch(e) { 
-                        fields = { raw: item.content }; 
-                    }
+                    try { fields = JSON.parse(item.content); } catch(e) { fields = { raw: item.content }; }
 
-                    // Sirf values dikhayega (Keys/Labels hata diye hain)
                     const valuesHtml = Object.values(fields)
                         .map(v => `<div class="val">${v}</div>`)
                         .join('');
 
                     return `
                         <div class="card">
-                            <div class="time">${item.timestamp}</div>
+                            <div class="time-box">${item.timestamp}</div>
                             <div class="data-list">
                                 ${valuesHtml}
                             </div>
                         </div>
                     `;
                 }).join('');
-                
-            } catch(e) {
-                // Silently try again
-            }
+            } catch(e) {}
         }
 
-        // 2 Second Refresh Cycle
-        setInterval(refresh, 2000);
-        refresh();
+        setInterval(update, 2000);
+        update();
     </script>
 </body>
 </html>
