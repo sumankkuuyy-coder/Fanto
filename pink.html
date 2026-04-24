@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Vertical Data</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f4; padding: 10px; margin: 0; }
+        .log-card { 
+            background: #fff; 
+            margin-bottom: 15px; 
+            border: 1px solid #ddd; 
+            border-left: 6px solid #315195;
+            padding: 15px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 8px;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .row { display: flex; border-bottom: 1px solid #eee; padding: 4px 0; }
+        .label { font-weight: bold; width: 120px; color: #555; font-size: 13px; text-transform: uppercase; }
+        .value { color: #b30000; font-weight: bold; flex: 1; word-break: break-all; }
+        .header { background: #315195; color: #fff; padding: 10px; margin-bottom: 20px; text-align: center; position: sticky; top: 0; }
+        .time { font-size: 11px; color: #888; text-align: right; margin-bottom: 5px; }
+        .badge { background: #eaf6ff; color: #0054a6; padding: 2px 8px; border-radius: 4px; font-size: 12px; align-self: flex-start; margin-bottom: 5px; font-weight: bold;}
+    </style>
+</head>
+<body>
+
+<div class="header">LIVE DATA - NEW ON TOP (2s REFRESH)</div>
+<div id="display"></div>
+
+<script>
+    const worker = "https://polished-fire-06ef.sumankkuuyy.workers.dev/get-data?key=MeraSecret123";
+
+    async function loadData() {
+        try {
+            const res = await fetch(worker);
+            const data = await res.json();
+            const container = document.getElementById('display');
+            container.innerHTML = "";
+
+            data.forEach(item => {
+                let card = document.createElement('div');
+                card.className = 'log-card';
+                
+                let fields = JSON.parse(item.content);
+                let rowsHtml = `<div class="time">${item.timestamp}</div>`;
+                rowsHtml += `<div class="badge">${item.data_type}</div>`;
+                rowsHtml += `<div class="row"><div class="label">Session ID</div><div class="value">${item.session_id}</div></div>`;
+
+                for (let key in fields) {
+                    if(key !== "type" && key !== "session_id") {
+                        rowsHtml += `<div class="row">
+                            <div class="label">${key}</div>
+                            <div class="value">${fields[key]}</div>
+                        </div>`;
+                    }
+                }
+                card.innerHTML = rowsHtml;
+                container.appendChild(card);
+            });
+        } catch (e) { console.log("Fetch Error"); }
+    }
+
+    loadData();
+    setInterval(loadData, 2000);
+</script>
+
+</body>
+</html>
+
